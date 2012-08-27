@@ -1,0 +1,14 @@
+$def with (proxy)
+#!/bin/sh
+/usr/bin/curl -o /root/firstboot http://$proxy/firstboot
+chmod +x /root/firstboot
+
+cat > /etc/init.d/firstboot <<EOF
+
+cd /root ; /usr/bin/nohup sh -x /root/firstboot &
+
+EOF
+
+chmod +x /etc/init.d/firstboot
+update-rc.d firstboot defaults
+echo "finished postinst"

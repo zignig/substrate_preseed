@@ -1,0 +1,9 @@
+$def with (host)
+#!/bin/sh
+apt-get install -y couchdb rabbitmq-server redis-server git
+# do stuff
+
+
+# clean out first boot and reboot
+update-rc.d firstboot remove
+# /sbin/reboot
