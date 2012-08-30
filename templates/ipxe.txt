@@ -1,0 +1,6 @@
+$def with (proxy)
+#!ipxe
+
+kernel /boot/linux bootfile=http://$proxy/boot auto=true priority=critical url=$proxy
+initrd /boot/initrd.gz 
+boot

@@ -17,6 +17,8 @@ urls = (
 	'/postinstall','postinstall',
 	'/firstboot','firstboot',
 	'/d-i/(.*)','preseed',
+	'/boot','chain',
+	'/boot/(.*)','boot',
 	'/','front_page'
 	)
 
@@ -24,6 +26,8 @@ app = web.application(urls, globals())
 proxy = conf['mirror']
 render = web.template.render('templates')
 password = conf['password'] 
+net_boot_path = 'sid/main/installer-i386/current/images/netboot/debian-installer/i386/'
+#net_boot_path = 'sid/main/installer-i386/current/images/cdrom/'
 ttl = 86400
 
 class front_page:
@@ -93,6 +97,17 @@ class postinstall:
 class firstboot:
 	def GET(self):
 		return render.firstboot(web.ctx.host)
+
+class chain:
+	def GET(self):
+		return render.ipxe(web.ctx.host)
+
+class boot:
+	def GET(self,name):
+		print name
+		d = dist()
+		data  = d.GET(net_boot_path+'/'+name)
+		return data
 
 if __name__ == "__main__":
 	app.run()
