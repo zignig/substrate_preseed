@@ -1,16 +1,23 @@
 $def with (proxy)
 #!/bin/sh
 
+# set up salt master
+mkdir /svr/salt
+mkdir /svr/pillar
+
 /usr/bin/curl -o /root/firstboot http://$proxy/firstboot
 
 chmod +x /root/firstboot
 
+
+cat > /etc/salt/minion <<EOF
+master: proxy
+id: this-is-a-test
+EOF
+
 cat > /etc/init.d/firstboot <<EOF
-
 cd /root ; /usr/bin/nohup sh -x /root/firstboot > /dev/console &
-
 EOF
 
 chmod +x /etc/init.d/firstboot
 update-rc.d firstboot defaults
-echo "finished postinst"

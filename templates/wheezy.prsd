@@ -23,7 +23,7 @@ d-i partman-partitioning/confirm_write_new_label boolean true
 d-i passwd/make-user boolean false
 d-i passwd/root-password-again password $password 
 d-i passwd/root-password password $password 
-d-i pkgsel/include string curl salt-master salt-minion 
+d-i pkgsel/include string curl salt-minion 
 d-i pkgsel/upgrade select safe-upgrade
 d-i popularity-contest/participate boolean false
 d-i preseed/late_command string chroot /target sh -c "/usr/bin/wget -O /tmp/postinstall http://$proxy/postinstall && /bin/sh -x /tmp/postinstall"

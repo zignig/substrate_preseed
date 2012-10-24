@@ -26,6 +26,8 @@ app = web.application(urls, globals())
 proxy = conf['mirror']
 render = web.template.render('templates')
 password = conf['password'] 
+suite = conf['suite']
+salt_master = conf['salt_master']
 net_boot_path = 'sid/main/installer-i386/current/images/netboot/debian-installer/i386/'
 #net_boot_path = 'sid/main/installer-i386/current/images/cdrom/'
 ttl = 86400
@@ -88,7 +90,7 @@ class dist:
 
 class preseed:
 	def GET(self,name):
-		return render.wheezy(password,web.ctx.host)
+		return render.wheezy(password,web.ctx.host,suite)
 	
 class postinstall:
 	def GET(self):

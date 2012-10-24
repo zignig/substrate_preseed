@@ -1,31 +1,5 @@
 $def with (host)
-#!/bin/sh
-echo Post install in progress > /dev/console
-echo Post install in progress > /dev/console
-echo Installing packages > /dev/console
-# install primary services 
-apt-get install -y couchdb rabbitmq-server redis-server git nodejs
-echo 1 of 3 > /dev/console
-
-# get python libs 
-apt-get install -y python-redis python-pika python-couchdbkit python-webpy
-echo 2 of 3 > /dev/console
-
-# get processor applications 
-apt-get install -y blender openscad inkscape admesh
-echo 3 of 3 > /dev/console
-
-# do stuff
-
-echo do stuff > /dev/console
-
-# copy some repos ( mine  ;) ) 
-
-echo > /dev/console
-git clone git://github.com/zignig/substrate
-git clone git://github.com/zignig/substrate_preseed
-git clone git://github.com/zignig/substrate_explorer
 
 # clean out first boot and reboot
-update-rc.d firstboot remove
-/sbin/reboot
+#update-rc.d firstboot remove
+#/sbin/reboot
