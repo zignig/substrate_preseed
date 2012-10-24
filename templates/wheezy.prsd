@@ -1,4 +1,4 @@
-$def with (password,proxy)
+$def with (password,proxy,suite)
 d-i clock-setup/utc boolean true
 d-i console-keymaps-at/keymap select us
 d-i debian-installer/locale string en_US
@@ -9,7 +9,7 @@ d-i mirror/country string manual
 d-i mirror/http/directory string /debian
 d-i mirror/http/hostname string $proxy 
 d-i mirror/http/proxy string
-d-i mirror/suite select unstable
+d-i mirror/suite select $suite 
 d-i netcfg/choose_interface select auto
 d-i partman-auto/choose_recipe select atomic
 d-i partman-auto/disk string /dev/sda
@@ -23,7 +23,7 @@ d-i partman-partitioning/confirm_write_new_label boolean true
 d-i passwd/make-user boolean false
 d-i passwd/root-password-again password $password 
 d-i passwd/root-password password $password 
-d-i pkgsel/include string openssh-server curl
+d-i pkgsel/include string curl salt-master salt-minion 
 d-i pkgsel/upgrade select safe-upgrade
 d-i popularity-contest/participate boolean false
 d-i preseed/late_command string chroot /target sh -c "/usr/bin/wget -O /tmp/postinstall http://$proxy/postinstall && /bin/sh -x /tmp/postinstall"
