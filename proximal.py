@@ -1,6 +1,6 @@
 #!/usr/bin/python
 import web
-import redis,urllib2,string,os,json
+import redis,urllib2,string,os,json,uuid
 
 conf = json.load(open('proximal.conf'))
 print conf
@@ -94,7 +94,7 @@ class preseed:
 	
 class postinstall:
 	def GET(self):
-		return render.postinstall(web.ctx.host) 
+		return render.postinstall(web.ctx.host,salt_master,str(uuid.uuid4())) 
 
 class firstboot:
 	def GET(self):
