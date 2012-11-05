@@ -1,6 +1,8 @@
 $def with (host)
 
 #upgrade to sid
+cp /etc/issue /etc/issue.tmp
+echo 'upgrading to sid' > /etc/issue
 
 cat > /etc/apt/sources.list <<EOF
 deb http://$host/debian sid main
@@ -11,4 +13,6 @@ apt-get -y dist-upgrade
 
 # clean out first boot and reboot
 update-rc.d firstboot remove
+update-rc.d salt-minion defaults
+mv /etc/issue.tmp /etc/issue
 /sbin/reboot

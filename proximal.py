@@ -28,7 +28,7 @@ render = web.template.render('templates')
 password = conf['password'] 
 suite = conf['suite']
 salt_master = conf['salt_master']
-net_boot_path = 'sid/main/installer-i386/current/images/netboot/debian-installer/i386/'
+net_boot_path = 'wheezy/main/installer-i386/current/images/netboot/debian-installer/i386/'
 #net_boot_path = 'sid/main/installer-i386/current/images/cdrom/'
 ttl = 86400
 
@@ -53,6 +53,7 @@ class pool:
 				f = open(cache_file)
 				data = f.read()
 				r.set('pool:'+name,data)
+				r.expire('pool:'+name,ttl)
 				return data
 			except:
 				print proxy+'/debian/pool/'+name
@@ -83,10 +84,9 @@ class dist:
 				data = req.read()
 				r.set('dist:'+name,data)
 				r.expire('dist:'+name,ttl)
-				
 				return data
 			except:
-				return 
+				return web.notfound()
 
 class preseed:
 	def GET(self,name):
@@ -94,7 +94,9 @@ class preseed:
 	
 class postinstall:
 	def GET(self):
-		return render.postinstall(web.ctx.host,salt_master,str(uuid.uuid4())) 
+		v = r.incr('worker')
+		worker = 'worker-'+str(v).zfill(4)
+		return render.postinstall(web.ctx.host,salt_master,worker)
 
 class firstboot:
 	def GET(self):
@@ -108,7 +110,9 @@ class boot:
 	def GET(self,name):
 		print name
 		d = dist()
-		data  = d.GET(net_boot_path+'/'+name)
+		path = net_boot_path+'/'+name
+		data  = d.GET(path)
+		r.expire(path,8*ttl)
 		return data
 
 if __name__ == "__main__":

@@ -49,5 +49,7 @@ wait a while ..... debian box with a password as defined in the config file
 ###references 
 
 http://www.50ply.com/blog/2012/07/16/automating-debian-installs-with-preseed-and-puppet/
+
 http://wiki.debian.org/DebianInstaller/Preseed
+
 http://ipxe.org/cmd/chain
