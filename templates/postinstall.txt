@@ -18,8 +18,8 @@ EOF
 cat > /etc/init.d/firstboot <<EOF
 ### BEGIN INIT INFO
 # Provides:        firstboot
-# Required-Start:  $networking
-# Required-Stop:   $networking
+# Required-Start:  $$networking
+# Required-Stop:   $$networking
 # Default-Start:   2 3 4 5
 # Default-Stop:    0 1 6
 # Short-Description: A script that runs once

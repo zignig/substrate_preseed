@@ -21,8 +21,7 @@ d-i partman-lvm/device_remove_lvm boolean true
 d-i partman-md/device_remove_md boolean true
 d-i partman-partitioning/confirm_write_new_label boolean true
 d-i passwd/make-user boolean false
-d-i passwd/root-password-again password $password 
-d-i passwd/root-password password $password 
+d-i passwd/root-password-crypted password $password 
 d-i pkgsel/include string curl salt-minion 
 d-i pkgsel/upgrade select safe-upgrade
 d-i popularity-contest/participate boolean false
