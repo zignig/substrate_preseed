@@ -16,19 +16,14 @@ Software needed to run
 
 [webpy](http://webpy.org)
 
+[salt](http://saltstate.org)
+
 apt-get install python-redis redis-server python-webpy
 
 # Usage 
 
-download the wheezy boot iso , or install a pxe environment 
+get the iPXE boot iso
 
-select automatic install and add 
-
-url=this.server:8080
-
-to the kernel boot line
-
-press enter
 
 # Virtual auto boot
 

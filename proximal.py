@@ -131,9 +131,9 @@ class chain:
 
 class boot:
 	def GET(self,name):
-		print name
 		d = dist()
 		path = net_boot_path+'/'+name
+		print path 
 		data  = d.GET(path)
 		r.expire(path,8*ttl)
 		return data
