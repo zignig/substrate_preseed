@@ -1,0 +1,14 @@
+!menu
+items:
+- !menu_item {link: '--default sanboot --no-describe --drive 0x80', name: local, tag: 'Boot from first hard drive'}
+- !menu_item {link: 'chain http://192.168.1.55:8080/class/salt_master/${net0/mac}', name: salt_master, tag: salt_master}
+- !menu_item {link: 'chain http://192.168.1.55:8080/boot?mac=${net0/mac}&uuid=${uuid}', name: base, tag: base}
+- !menu_item {link: 'chain http://192.168.1.55:8080/class/worker/${net0/mac}', name: worker, tag: worker}
+- !menu_item {link: 'chain http://192.168.1.55:8080/class/storage/${net0/mac}', name: storate, tag: storage}
+- !menu_item {link: 'chain http://192.168.1.55:8080/class/sentinal/${net0/mac}', name: sentinal, tag: sentinal}
+- !menu
+  items: []
+  tag: start
+  title: Submenu
+tag: top
+title: Substrate Builder

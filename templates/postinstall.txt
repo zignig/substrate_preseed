@@ -1,19 +1,10 @@
 $def with (proxy,salt_master,uid)
 #!/bin/sh
 
-# set up salt master
-mkdir /srv/salt
-mkdir /srv/pillar
-
-/usr/bin/curl -o /root/firstboot http://$proxy/firstboot
+# get the firstboot file
+/usr/bin/curl -o /root/firstboot http://$proxy/firstboot/$uid
 
 chmod +x /root/firstboot
-
-
-cat > /etc/salt/minion <<EOF
-master: $salt_master 
-id: $uid 
-EOF
 
 cat > /etc/init.d/firstboot <<EOF
 ### BEGIN INIT INFO
@@ -29,6 +20,4 @@ cd /root ; /usr/bin/nohup sh -x /root/firstboot > /dev/console &
 EOF
 
 chmod +x /etc/init.d/firstboot
-# remove salt minion until after upgrade
-update-rc.d salt-minion remove
 update-rc.d firstboot defaults

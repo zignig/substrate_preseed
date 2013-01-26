@@ -1,4 +1,4 @@
-$def with (host)
+$def with (host,salt_master,name)
 
 #upgrade to sid
 cp /etc/issue /etc/issue.tmp
@@ -11,8 +11,16 @@ EOF
 apt-get update
 apt-get -y dist-upgrade
 
+# install salt minion
+
+apt-get -y install salt-minion
+cat > /etc/salt/minion <<EOF
+master: $salt_master
+id: $name
+EOF
+
+/etc/init.d/salt-minion restart
 # clean out first boot and reboot
 update-rc.d firstboot remove
-update-rc.d salt-minion defaults
 mv /etc/issue.tmp /etc/issue
 /sbin/reboot
