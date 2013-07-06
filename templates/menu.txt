@@ -1,0 +1,14 @@
+$def with (menu_items,mac,base)
+#!ipxe
+login
+:top
+menu Please select a machine 
+$for i in menu_items:
+    item $i $i
+choose selected 
+goto $${selected}
+
+$for i in menu_items:
+    :$i
+    chain http://$base/class/$i/$mac
+
