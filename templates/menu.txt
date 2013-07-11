@@ -1,6 +1,5 @@
 $def with (menu_items,mac,base)
 #!ipxe
-login
 :top
 menu Please select a machine 
 $for i in menu_items:
@@ -10,5 +9,5 @@ goto $${selected}
 
 $for i in menu_items:
     :$i
-    chain http://$base/class/$i/$mac
+    chain http://$base/bootserver/class/$i/$mac
 

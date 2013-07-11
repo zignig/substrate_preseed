@@ -1,0 +1,4 @@
+$def with (proxy,machine_class)
+#!ipxe
+
+sanboot --no-describe --drive 0x80
