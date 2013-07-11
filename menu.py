@@ -52,9 +52,9 @@ class menu(yaml.YAMLObject):
 			txt = txt + i.show(self.tag)
 		return txt
 
-	def boot_menu(self,host):	
+	def boot_menu(self):	
 		txt = '#!ipxe\n\n'
-		txt = txt + 'dhcp\n\n'
+		#txt = txt + 'dhcp\n\n'
 		txt = txt + self.show()
 		return txt
 	
@@ -63,7 +63,10 @@ class menu(yaml.YAMLObject):
 		f.write(yaml.dump(self))
 		
 
-m = yaml.load(open('menu.yaml').read())
-print m.boot_menu('')
-f = open('./substrate.ipxe','w')
-f.write(m.boot_menu(''))
+def get_menu(file_name='menu.yaml'):
+	return yaml.load(open(file_name).read())
+
+m = get_menu()
+print m.boot_menu()
+#f = open('./substrate.ipxe','w')
+#f.write(m.boot_menu(''))

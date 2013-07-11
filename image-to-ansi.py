@@ -366,6 +366,7 @@ RGB2SHORT_DICT, SHORT2RGB_DICT = _create_dicts()
 if __name__ == '__main__':
     import Image
     im = Image.open(sys.argv[1])
+    im.thumbnail((40,80))
     for y in xrange(im.size[1]):
         for x in xrange(im.size[0]):
             p = im.getpixel((x,y))

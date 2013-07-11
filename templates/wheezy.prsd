@@ -7,10 +7,11 @@ d-i grub-installer/only_debian boolean true
 d-i keyboard-configuration/xkb-keymap select us 
 d-i mirror/country string manual
 d-i mirror/http/directory string /debian
-d-i mirror/http/hostname string $proxy 
-d-i mirror/http/proxy string
-d-i mirror/suite select $suite 
+d-i mirror/http/hostname string ftp.debian.org 
+d-i mirror/http/proxy string http://substrate.terra:3142/
+d-i mirror/suite select testing 
 d-i netcfg/choose_interface select auto
+
 d-i partman-auto/choose_recipe select atomic
 d-i partman-auto/disk string /dev/sda
 d-i partman-auto/method string regular
@@ -20,6 +21,7 @@ d-i partman/confirm_nooverwrite boolean true
 d-i partman-lvm/device_remove_lvm boolean true
 d-i partman-md/device_remove_md boolean true
 d-i partman-partitioning/confirm_write_new_label boolean true
+
 d-i passwd/make-user boolean false
 d-i passwd/root-password-crypted password $password 
 d-i pkgsel/include string curl git 

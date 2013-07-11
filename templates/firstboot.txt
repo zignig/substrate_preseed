@@ -1,15 +1,15 @@
 $def with (host,salt_master,name)
 
 #upgrade to sid
-cp /etc/issue /etc/issue.tmp
-echo 'upgrading to sid' > /etc/issue
+#cp /etc/issue /etc/issue.tmp
+#echo 'upgrading to sid' > /etc/issue
 
-cat > /etc/apt/sources.list <<EOF
-deb http://$host/debian sid main
-EOF
+#cat > /etc/apt/sources.list <<EOF
+#deb http://$host/debian sid main
+#EOF
 
-apt-get update
-apt-get -y dist-upgrade
+#apt-get update
+#apt-get -y dist-upgrade
 
 # install salt minion
 
@@ -18,9 +18,22 @@ cat > /etc/salt/minion <<EOF
 master: $salt_master
 id: $name
 EOF
-
 /etc/init.d/salt-minion restart
+
+# hard set hostname 
+
+cat > /etc/hostname <<EOF
+$name
+EOF
+
 # clean out first boot and reboot
 update-rc.d firstboot remove
 mv /etc/issue.tmp /etc/issue
+
+# notify proximal 
+
+curl http://$host/finished/$name
+
+# reboot into your new system 
+
 /sbin/reboot

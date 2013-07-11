@@ -22,6 +22,7 @@ urls = (
 	'/boot','chain',
 	'/boot/(.*)','boot',
 	'/class/(.*)','machine_type',
+	'/menu/(.*)','menu',
 	'/','front_page'
 	)
 
@@ -41,6 +42,11 @@ def password_hash(password,salt_length=4):
 		salt_string = salt_string + random.choice(string.letters)
 	salt = '$1$'+salt_string+'$' #1 is md5 hash
 	return crypt.crypt(password,salt)
+
+class menu:
+	def GET(self,name):
+		print name
+		return render.menu(conf['servers'],name,web.ctx.host)
 
 class front_page:
 	def GET(self):
