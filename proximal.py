@@ -63,10 +63,6 @@ def password_hash(password,salt_length=4):
 
 class menu:
 	def GET(self,name):
-<<<<<<< HEAD
-		print name
-		return render.menu(conf['servers'],name,web.ctx.host)
-=======
 		parts = name.split('/')
 		if check_mac(parts[0]):
 			return render.menu(conf['servers'],parts[-1],web.ctx.host)
@@ -75,7 +71,6 @@ class menu:
 				return render.hard_drive(parts[-1],web.ctx.host)
 			else:
 				return render.ipxe(parts[-1],web.ctx.host)
->>>>>>> 45f22dc9128db3cc6c027c3745951d1d2a122e22
 
 class front_page:
 	def GET(self):
