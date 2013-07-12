@@ -1,8 +1,8 @@
-$def with (host,salt_master,name)
+$def with (host,salt_master,name,mac)
 
 #upgrade to sid
-#cp /etc/issue /etc/issue.tmp
-#echo 'upgrading to sid' > /etc/issue
+cp /etc/issue /etc/issue.tmp
+echo 'first boot installing' > /etc/issue
 
 #cat > /etc/apt/sources.list <<EOF
 #deb http://$host/debian sid main
@@ -32,7 +32,7 @@ mv /etc/issue.tmp /etc/issue
 
 # notify proximal 
 
-curl http://$host/finished/$name
+curl http://$host/bootserver/finished/$mac
 
 # reboot into your new system 
 

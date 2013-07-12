@@ -27,7 +27,7 @@ d-i passwd/root-password-crypted password $password
 d-i pkgsel/include string curl git 
 d-i pkgsel/upgrade select safe-upgrade
 d-i popularity-contest/participate boolean false
-d-i preseed/late_command string chroot /target sh -c "/usr/bin/wget -O /tmp/postinstall http://$proxy/postinstall/$mac && /bin/sh -x /tmp/postinstall"
+d-i preseed/late_command string chroot /target sh -c "/usr/bin/wget -O /tmp/postinstall http://$proxy/bootserver/postinstall/$mac && /bin/sh -x /tmp/postinstall"
 d-i time/zone string US/Eastern
 tasksel tasksel/first multiselect standard
 

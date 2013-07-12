@@ -1,6 +1,6 @@
 $def with (proxy,machine_class)
 #!ipxe
 
-kernel /boot/linux bootfile=http://$proxy/bootserver/boot auto=true priority=critical url=$proxy/bootserver/prsd/$machine_class
-initrd /boot/initrd.gz 
+kernel /bootserver/boot/linux bootfile=http://$proxy/bootserver/boot auto=true priority=critical url=$proxy/bootserver/prsd/$machine_class
+initrd /bootserver/boot/initrd.gz 
 boot

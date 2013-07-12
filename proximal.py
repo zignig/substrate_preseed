@@ -3,10 +3,9 @@ import web
 import urllib2,string,os,json,uuid,crypt,random,string
 import sqlite3
 
+web.config.debug = True 
 conf = json.load(open('/opt/substrate_preseed/proximal.conf'))
-#database = sqlite3.connect('/opt/test.db')
-#cur = database.cursor()
-db = web.database(dbn='sqlite',db='/opt/db/test.db')
+db = web.database(dbn='sqlite',db='/opt/data_preseed/test.db')
 
 urls = (
 	'/menu/(.*)','menu',
@@ -18,6 +17,7 @@ urls = (
 	'/boot/(.*)','boot',
 	'/class/(.*)','machine_type',
 	'/menu/(.*)','menu',
+	'/finished/(.*)','finished',
 	'/','front_page'
 	)
 
@@ -28,8 +28,17 @@ render = web.template.render('/opt/substrate_preseed/templates')
 password = conf['password']
 suite = conf['suite']
 salt_master = conf['salt_master']
-net_boot_path = 'http://debian.org/debian/wheezy/main/installer-i386/current/images/netboot/debian-installer/i386/'
-#net_boot_path = 'sid/main/installer-i386/current/images/cdrom/'
+
+# TODO add downloader for these files on first boot
+kernel = "http://ftp.debian.org/debian/dists/stable/main/installer-i386/current/images/netboot/debian-installer/i386/linux"
+initrd = "http://ftp.debian.org/debian/dists/stable/main/installer-i386/current/images/netboot/debian-installer/i386/initrd.gz"
+
+# convert to class for abstraction
+# class machine:
+
+def get_info(mac):
+	data = db.where('machines',mac=mac)
+	return data.list().pop()
 
 def check_mac(mac):
 	data = db.where('machines',mac=mac)
@@ -37,6 +46,9 @@ def check_mac(mac):
 		return True 
 	else:
 		return False 
+
+def set_status(mac):
+	db.update('machines',where='mac = $mac',status=1,vars=locals())
 
 def check_status(mac):
 	data = db.where('machines',mac=mac)
@@ -80,35 +92,50 @@ class machine_type:
 	def GET(self,name):
 		parts = name.split('/')
 		insert_mac(parts[1],parts[0])
-		return render.ipxe(name,web.ctx.host)
+		return render.ipxe(web.ctx.host,name)
 
 class preseed:
 	def GET(self,name):
 		parts = name.split('/')
-		return render.wheezy(password_hash(password),web.ctx.host,suite,machine_name,mac_address)
+		mac_address = parts[-1]
+		machine = get_info(mac_address)
+		return render.wheezy(password_hash(password),web.ctx.host,suite,machine['name'],mac_address)
 	
 class postinstall:
 	def GET(self,name):
-		return render.postinstall(web.ctx.host,salt_master,machine_name)
+		parts = name.split('/')
+		mac_address = parts[-1]
+		machine = get_info(mac_address)
+		return render.postinstall(web.ctx.host,salt_master,mac_address)
 
 class firstboot:
 	def GET(self,name):
-		return render.firstboot(web.ctx.host,salt_master,machine_name)
+		parts = name.split('/')
+		mac_address = parts[-1]
+		machine = get_info(mac_address)
+		return render.firstboot(web.ctx.host,salt_master,machine['name'],mac_address)
 
-class chain:
-	def GET(self):
-		print(web.input())
-		machine_name = 'mac:'+web.input()['mac']
-		return('#!ipxe\n\nexit')
-		if r.exists(machine_name):
-			return render.ipxe(web.ctx.host,r.get(machine_name),menu)
-		else:
-			r.set(machine_name,'master')
-			return render.ipxe(web.ctx.host,'master',menu)
+
+class finished:
+	def GET(self,name):
+		parts = name.split('/')
+		mac_address = parts[-1]
+		set_status(mac_address)
+		return
 
 class boot:
 	def GET(self,name):
-		return data
+		# return boot binaries
+		if name == 'linux' or name == 'initrd.gz':
+			try:
+				os.stat(conf['storage']+os.sep+name)
+			 	data = open(conf['storage']+os.sep+name).read()
+				return data	
+			except:
+				return 'fail'
+			
+		
+		
 
 application = web.application(urls, globals()).wsgifunc()
 

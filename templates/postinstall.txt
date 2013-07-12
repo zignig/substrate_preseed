@@ -2,7 +2,7 @@ $def with (proxy,salt_master,uid)
 #!/bin/sh
 
 # get the firstboot file
-/usr/bin/curl -o /root/firstboot http://$proxy/firstboot/$uid
+/usr/bin/curl -o /root/firstboot http://$proxy/bootserver/firstboot/$uid
 
 chmod +x /root/firstboot
 
