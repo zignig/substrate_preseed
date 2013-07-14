@@ -21,3 +21,6 @@ EOF
 
 chmod +x /etc/init.d/firstboot
 update-rc.d firstboot defaults
+
+# notify proximal that install has finished
+/usr/bin/curl  http://$proxy/bootserver/installed/$uid

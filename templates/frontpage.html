@@ -1,13 +1,29 @@
-$def with (host,machines)
+$def with (host,sections,machines)
 <!DOCTYPE html>
 <html>
 <body>
-
+<link rel="stylesheet" href="static/pure-min.css">
+<link rel="stylesheet" href="static/bb.css">
+<div class="pure-g-r" id="content">
+<div class="pure-u" id="main">
+<div class="head pure-u-1">
 <h1>Proximal Boot server</h1>
-<p>
-Proximal is a debian boot server and package cache. It uses the <a href="http://ipxe.org">ipxe</a> bootloader as an .iso
-</p>
-Iso file <a href="substrate.iso">ISO boot disk</a>
-$machines
+</div>
+<div class="content">
+<table class="pure-table pure-table-horizontal" id="main">
+<thead>
+<tr>
+$for i in sections:
+	<th>$i</th>
+</tr>
+</thead>
+$for j in machines:
+	<tr>
+	$for k in j:
+		<td>$k</td>
+	</tr>
+</table>
+</div>
+</div>
 </body>
 </html>

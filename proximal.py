@@ -11,6 +11,7 @@ urls = (
 	'/menu/(.*)','menu',
 	'/postinstall/(.*)','postinstall',
 	'/firstboot/(.*)','firstboot',
+	'/installed/(.*)','installed',
 	'/prsd/(.*)','preseed',
 	'/d-i/(.*)','preseed',
 	'/boot','chain',
@@ -33,8 +34,16 @@ salt_master = conf['salt_master']
 kernel = "http://ftp.debian.org/debian/dists/stable/main/installer-i386/current/images/netboot/debian-installer/i386/linux"
 initrd = "http://ftp.debian.org/debian/dists/stable/main/installer-i386/current/images/netboot/debian-installer/i386/initrd.gz"
 
-# convert to class for abstraction
+# TODO convert to class for abstraction
 # class machine:
+
+def get_machines():
+	data = db.where('machines')
+	tmp = []
+	for i in data:
+		tmp.append(i.values())
+	sections = i.keys()
+	return sections,tmp 
 
 def get_info(mac):
 	data = db.where('machines',mac=mac)
@@ -66,12 +75,16 @@ def insert_mac(mac,name):
 	else:
 		return False
 
+# password has generator
+
 def password_hash(password,salt_length=4):
 	salt_string = ''
 	for i in range(salt_length):
 		salt_string = salt_string + random.choice(string.letters)
 	salt = '$1$'+salt_string+'$' #1 is md5 hash
 	return crypt.crypt(password,salt)
+
+# web py classes 
 
 class menu:
 	def GET(self,name):
@@ -82,11 +95,12 @@ class menu:
 			if check_status(parts[0]):
 				return render.hard_drive(parts[-1],web.ctx.host)
 			else:
-				return render.ipxe(parts[-1],web.ctx.host)
+				return render.ipxe(web.ctx.host,parts[-1])
 
 class front_page:
 	def GET(self):
-		return render.frontpage(web.ctx.host)
+		sections,machines = get_machines()
+		return render.frontpage(web.ctx.host,sections,machines)
 
 class machine_type:
 	def GET(self,name):
@@ -115,6 +129,13 @@ class firstboot:
 		machine = get_info(mac_address)
 		return render.firstboot(web.ctx.host,salt_master,machine['name'],mac_address)
 
+
+class installed:
+	def GET(self,name):
+		parts = name.split('/')
+		mac_address = parts[-1]
+		set_status(mac_address)
+		return
 
 class finished:
 	def GET(self,name):
