@@ -3,7 +3,7 @@ substrate_preseed
 
 A debian preseed and package cache using redis and webpy
 
-This program will install a vanilla copy of unstable debian with no iteraction
+This program will install a vanilla copy of unstable debian with no interaction
 
 #WARNING , WILL FORMAT WITH NO QUESTIONS
 (you have been warned)
